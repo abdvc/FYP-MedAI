@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Med AI Home{% endblock %}
+{% block content %}
+<div class="container text-center">
+    <div class="row">
+        <div class="col-lg-12 center-elements">
+            <p>
+                <a href="#" class="btn btn-squared-default-plain btn-data btn-space">
+                    <br /><br/>
+                    Data Entry
+                </a>
+                <a href="#" class="btn btn-squared-default-plain btn-patient btn-space">
+                    <br /><br/>
+                    Patient History
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-squared-default-plain
+    {
+        width: 200px !important;
+        height: 200px !important;
+        font-size: 23px;
+        color: #F0FFFF;
+    }
+
+    .btn-patient
+    {
+        background-color: #2F4F4F;
+    }
+
+    .btn-data
+    {
+        background-color: #696969;
+    }
+
+    .btn-squared-default-plain:hover
+    {
+        border: 0px solid white;
+    }
+
+    .btn-space 
+    {
+        margin-right: 50px;
+        margin-left: 50px;
+    }
+
+    .center-elements 
+    {
+        margin-top: 200px;
+    }
+</style>
+{% endblock %}
