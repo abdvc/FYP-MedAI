@@ -4,7 +4,14 @@
     <link rel="stylesheet" href="../static/assets/dist/css/bootstrap.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
+    {% set navigation_bar = [
+      ('/', 'home', 'Home'),
+      ('/entry', 'entry', 'Data Entry'),
+      ('/pathist', 'pathist', 'Patient History')
+    ] -%}
+    {% set active_page = active_page|default('home') -%}
 </head>
 <body>
     <!--Nav bar code-->
@@ -19,15 +26,10 @@
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Data Entry</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Patient History</a>
-            </li>
+            {% for href, id, caption in navigation_bar %}
+              <li{% if id == active_page %} class="nav-item active" {% else %} class="nav-item" {% endif
+              %}><a class="nav-link" href="{{ href|e }}">{{ caption|e }}</a></li>
+            {% endfor %}
             <li class="nav-item">
               <a class="nav-link" href="/logout">Logout</a>
           </li>
