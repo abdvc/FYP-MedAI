@@ -15,8 +15,22 @@ def login():
 
 @app.route('/home')
 def home():
-    if "email" in session:
+    if check_session():
         return render_template('home.html')
+    else:
+        return redirect(url_for("login"))
+
+@app.route('/entry')
+def entry():
+    if check_session():
+        return render_template('entry.html')
+    else:
+        return redirect(url_for("login"))
+
+@app.route('/pathist')
+def pathist():
+    if check_session():
+        return render_template('pathist.html')
     else:
         return redirect(url_for("login"))
 
@@ -25,5 +39,12 @@ def logout():
     session.pop("email", None)
     return redirect(url_for("login"))
 
+def check_session():
+    if "email" in session:
+        return True
+    else:
+        False
+
 if __name__ == "__main__":
     app.run(debug=True)
+#testingdaa
