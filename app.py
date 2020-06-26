@@ -34,6 +34,14 @@ def pathist():
     else:
         return redirect(url_for("login"))
 
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
+@app.route('/dochist')
+def dochist():
+    return render_template('dochist.html')
+
 @app.route('/logout')
 def logout():
     session.pop("email", None)
@@ -47,4 +55,3 @@ def check_session():
 
 if __name__ == "__main__":
     app.run(debug=True)
-#testingdaa
