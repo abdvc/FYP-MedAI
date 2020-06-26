@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% set active_page = "admin" %}
 {% block title %}Med AI | Admin Panel{% endblock %}
-{% block head %}{% endblock %}
-{% block content %}{% endblock %}
+{% block head %}
+<link href="../static/css/admin.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="admin-body">
+    <h1 class="display-4">Admin Panel</h1>
+    <br/><hr><br/>
+</div>
+{% endblock %}
