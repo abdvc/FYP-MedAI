@@ -6,17 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block head %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
-    {% set navigation_bar = [
-      ('/', 'home', 'Home'),
-      ('/entry', 'entry', 'Data Entry'),
-      ('/pathist', 'pathist', 'Patient History')
-    ] -%}
-    {% set active_page = active_page|default('home') -%}
+    {% set navbar1 = ['home','entry','pathist'] -%}
+    {% set navbar2 = ['admin','dochist'] -%}
+    {% if active_page in navbar1 -%}
+      {% set navigation_bar = [
+        ('/', 'home', 'Home'),
+        ('/entry', 'entry', 'Data Entry'),
+        ('/pathist', 'pathist', 'Patient History')
+      ] -%}
+      {% set active_page = active_page|default('home') -%}
+    {% else %}
+      {% set navigation_bar = [
+        ('/admin', 'admin', 'Admin'),
+        ('/dochist', 'dochist', 'Doctor History')
+      ] -%}
+      {% set active_page = active_page|default('admin') -%}
+    {% endif %}
 </head>
 <body>
     <!--Nav bar code-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/home">
+        <a class="navbar-brand" {% if 'home' in navigation_bar %} href="/home" {% else %} href="/admin" {% endif %}>
             <img src="../static/assets/brand/medical.png" width="30" height="30" class="d-inline-block align-top">
             MedAI App
         </a>
