@@ -1,8 +1,17 @@
 from flask import Flask, render_template, url_for, request, redirect, session
+import sqlite3
+import pandas as pd
 
 app = Flask(__name__)
 app.secret_key = "lightupskecher"
+conn = sqlite3.connect("MedAi.db")
 
+
+def get_features(model_id):
+    query = 'select name,type,feat_order from features where model_id = ?'
+    cur = conn.execute(query,(model_id,))
+    return pd.DataFrame(cur.fetchall())
+    
 @app.route('/', methods=['POST','GET'])
 def login():
     if request.method == 'POST':
