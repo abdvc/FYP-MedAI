@@ -1,7 +1,81 @@
 from flask import Flask, render_template, url_for, request, redirect, session
+import sqlite3
+import pandas as pd
 
 app = Flask(__name__)
 app.secret_key = "lightupskecher"
+conn = sqlite3.connect("MedAi.db")
+
+
+def get_features(model_id):
+    """
+    can we get an alternate type for easier to understand input?
+    """
+    query = 'select name,type,feat_order from features where model_id = ?'
+    cur = conn.execute(query,(model_id,))
+
+    return pd.DataFrame(cur.fetchall())
+
+def add_features(model_id,features, feature_types, feat_order=None):
+
+    feature_query = 'insert into features (name, type, model_id, feat_order) values (?,?,?,?)'
+    i = 0
+    for feature in features:
+        if feat_order is None:
+            if feature_types is None:
+                conn.execute(feature_query,[feature,'string',model_id,i])
+            else:
+                conn.execute(feature_query,[feature,feature_types[i],model_id,i])
+        else:
+            if feature_types is None:
+                conn.execute(feature_query,[feature,'string',model_id,feat_order[i]])
+            else:
+                conn.execute(feature_query,[feature,feature_types[i],model_id,feat_order[i]])
+        i = i + 1
+    conn.commit()
+
+#TODO: validation
+def add_model(model, model_name, desc, features=None,feature_types=None, feat_order=None, preprocess=None):
+    model_query = 'insert into models (name,description,model) values (?,?,?)'
+    conn.execute(model_query,[model_name,desc,model])
+    conn.commit()
+
+    get_id_query = 'select MAX(id) from models'
+    cur = conn.execute(get_id_query)
+    model_id = cur.fetchone()
+    model_id = model_id[0]
+
+    if features is not None:
+        add_features(model_id,features,feature_types, feat_order)
+    
+    if preprocess is not None:
+        preprocess_query = 'insert into preprocess (file_name,model_id) values (?,?)'
+        conn.execute(preprocess_query,[preprocess, model_id])
+    
+    return model_id
+
+#TODO: finish method
+def convert_input():
+    """
+    convert input given through form into a model readable form. can be done through calling preprocess after converting to something like a dataframe
+    additional arguements for further customization?
+    """
+    return None
+
+# finish
+def prediction():
+    """
+    give input to model for prediction
+
+    """
+    return None
+    
+def explain():
+    """
+    explain the results of the model prediction in this method
+
+    """
+    return None
 
 @app.route('/', methods=['POST','GET'])
 def login():
