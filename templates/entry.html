@@ -16,6 +16,20 @@
   
   <!-- Page content -->
 <div class="main">
-    {{ get_features(model_id=1) }}
+    <h1 class="display-4">Data Entry</h1>
+    <hr>
+    <form action="#">
+      {% set feat = get_features(model_id=1) %}
+      {% for row in feat %}
+        <label>{{row[0]}}</label>
+        <input 
+          {% if row[1] == "int64" %}type="number"
+          {% elif row[1] == "float64" %}type="number" step="0.01"
+          {% else %}type="text"
+          {% endif %}
+        >
+        <br>
+      {% endfor %}
+    </form>
 </div>
 {% endblock %}
