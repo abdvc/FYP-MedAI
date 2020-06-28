@@ -6,6 +6,13 @@ app = Flask(__name__)
 app.secret_key = "lightupskecher"
 conn = sqlite3.connect("MedAi.db", check_same_thread=False)
 
+def model_list():
+    query = "select * from models"
+
+    cur = conn.execute(query)
+
+    return cur.fetchall()
+
 def get_features(model_id):
     """
     can we get an alternate type for easier to understand input?
