@@ -46,22 +46,7 @@ def add_model(model, model_name, desc, features=None,feature_types=None, feat_or
     model_id = model_id[0]
 
     if features is not None:
-
-        feature_query = 'insert into features (name, type, model_id, feat_order) values (?,?,?,?)'
-        i = 0
-        for feature in features:
-            if feat_order is None:
-                if feature_types is None:
-                    conn.execute(feature_query,[feature,'string',model_id,i])
-                else:
-                    conn.execute(feature_query,[feature,feature_types[i],model_id,i])
-            else:
-                if feature_types is None:
-                    conn.execute(feature_query,[feature,'string',model_id,feat_order[i]])
-                else:
-                    conn.execute(feature_query,[feature,feature_types[i],model_id,feat_order[i]])
-            i = i + 1
-        conn.commit()
+        add_features(model_id,features,feature_types, feat_order)
     
     if preprocess is not None:
         preprocess_query = 'insert into preprocess (file_name,model_id) values (?,?)'
