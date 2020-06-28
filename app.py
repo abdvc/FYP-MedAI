@@ -4,8 +4,7 @@ import pandas as pd
 
 app = Flask(__name__)
 app.secret_key = "lightupskecher"
-conn = sqlite3.connect("MedAi.db")
-
+conn = sqlite3.connect("MedAi.db", check_same_thread=False)
 
 def get_features(model_id):
     """
@@ -14,7 +13,9 @@ def get_features(model_id):
     query = 'select name,type,feat_order from features where model_id = ?'
     cur = conn.execute(query,(model_id,))
 
-    return pd.DataFrame(cur.fetchall())
+    return cur.fetchall()
+
+app.jinja_env.globals.update(get_features=get_features)
 
 def add_features(model_id,features, feature_types, feat_order=None):
 
