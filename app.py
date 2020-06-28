@@ -6,11 +6,6 @@ app = Flask(__name__)
 app.secret_key = "lightupskecher"
 conn = sqlite3.connect("MedAi.db")
 
-def model_list(model_id):
-    query = 'select * from models'
-    cur = conn.execute(query)
-
-    return cur.fetchall()
 
 def get_features(model_id):
     """
