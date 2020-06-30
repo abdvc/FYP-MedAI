@@ -1,6 +1,5 @@
 from flask import Flask, render_template, url_for, request, redirect, session
 import sqlite3
-import pandas as pd
 
 app = Flask(__name__)
 app.secret_key = "lightupskecher"
