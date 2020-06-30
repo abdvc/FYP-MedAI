@@ -1,6 +1,5 @@
 from flask import Flask, render_template, url_for, request, redirect, session
 import sqlite3
-import pandas as pd
 
 app = Flask(__name__)
 app.secret_key = "lightupskecher"
@@ -88,12 +87,19 @@ def explain():
 @app.route('/', methods=['POST','GET'])
 def login():
     if request.method == 'POST':
-        session["email"] = request.form["inputEmail"]
-        return redirect(url_for("home"))
+        email = request.form["inputEmail"]
+        res = conn.execute('SELECT * from Users where email=?', (email,)).fetchone()
+        if res == None:
+            return render_template('login.html', message="Email does not exist")
+        elif res[3] == request.form["inputPassword"]:
+            session["email"] = email
+            return redirect(url_for("home"))
+        else:
+            return render_template('login.html', message="Incorrect password")
     else:
         if "email" in session:
             return redirect(url_for("home"))
-        return render_template('login.html')
+        return render_template('login.html', message="  ")
 
 @app.route('/home')
 def home():
