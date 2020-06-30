@@ -80,8 +80,15 @@ def explain():
 @app.route('/', methods=['POST','GET'])
 def login():
     if request.method == 'POST':
-        session["email"] = request.form["inputEmail"]
-        return redirect(url_for("home"))
+        email = request.form["inputEmail"]
+        session["email"] = email
+        res = conn.execute('SELECT * from Users where email=?', (email,)).fetchone()
+        if res == None:
+            return render_template('login.html', message="Email does not exist")
+        elif res[3] == request.form["inputPassword"]:
+            return redirect(url_for("home"))
+        else:
+            return render_template('login.html', message="Incorrect password")
     else:
         if "email" in session:
             return redirect(url_for("home"))

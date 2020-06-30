@@ -1,3 +1,4 @@
 .vscode/settings.json
 env
-__pycache__/login_db.cpython-37.pyc
+__pycache__
+user_db.py
