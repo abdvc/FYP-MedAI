@@ -7,11 +7,10 @@
 {% block content %}
 <!-- Side navigation -->
 <div class="sidenav">
-    <a href="#">Chronic Kidney Disease</a>
-    <a href="#">Cardiovascular Disease</a>
-    <a href="#">Disease X</a>
-    <a href="#">Disease Y</a>
-    <a href="#">Disease Z</a>
+  {% set model = model_list() %}
+  {% for row in model %}
+    <a href="#">{{ row[1] }}</a>
+  {% endfor %}
 </div>
   
   <!-- Page content -->

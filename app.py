@@ -21,8 +21,6 @@ def get_features(model_id):
 
     return cur.fetchall()
 
-app.jinja_env.globals.update(get_features=get_features)
-
 def add_features(model_id,features, feature_types, feat_order=None):
 
     feature_query = 'insert into features (name, type, model_id, feat_order) values (?,?,?,?)'
@@ -168,6 +166,8 @@ def dochist():
 @app.route('/logout')
 def logout():
     session.pop("email", None)
+    session.pop("name", None)
+    session.pop("admin", None)
     return redirect(url_for("login"))
 
 #method to check if session is valid
@@ -183,6 +183,9 @@ def check_admin():
         return True
     else:
         return False
+
+app.jinja_env.globals.update(get_features=get_features)
+app.jinja_env.globals.update(model_list=model_list)
 
 if __name__ == "__main__":
     app.run(debug=True)
