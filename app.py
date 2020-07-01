@@ -84,6 +84,7 @@ def explain():
     """
     return None
 
+#login page
 @app.route('/', methods=['POST','GET'])
 def login():
     if request.method == 'POST':
@@ -106,6 +107,7 @@ def login():
             return redirect(url_for("home"))
         return render_template('login.html', message="  ")
 
+#route to doctor home page
 @app.route('/home')
 def home():
     if check_session():
@@ -116,6 +118,7 @@ def home():
     else:
         return redirect(url_for("login"))
 
+#route to data entry page
 @app.route('/entry')
 def entry():
     if check_session():
@@ -126,6 +129,7 @@ def entry():
     else:
         return redirect(url_for("login"))
 
+#route to patient history
 @app.route('/pathist')
 def pathist():
     if check_session():
@@ -136,6 +140,7 @@ def pathist():
     else:
         return redirect(url_for("login"))
 
+#route to admin home page
 @app.route('/admin')
 def admin():
     if check_session():
@@ -146,6 +151,7 @@ def admin():
     else:
         return redirect(url_for("login"))
 
+#route to doctor history page
 @app.route('/dochist')
 def dochist():
     if check_session():
@@ -156,17 +162,20 @@ def dochist():
     else:
         return redirect(url_for("login"))
 
+#login function
 @app.route('/logout')
 def logout():
     session.pop("email", None)
     return redirect(url_for("login"))
 
+#method to check if session is valid
 def check_session():
     if "email" in session:
         return True
     else:
         False
 
+#Method to check if the user is an admin or doctor
 def check_admin():
     if session["admin"] == 1:
         return True
