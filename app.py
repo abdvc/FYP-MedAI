@@ -93,7 +93,12 @@ def login():
             return render_template('login.html', message="Email does not exist")
         elif res[3] == request.form["inputPassword"]:
             session["email"] = email
-            return redirect(url_for("home"))
+            session["admin"] = res[4]
+            session["name"] = res[1]
+            if res[4] == 1:
+                return redirect(url_for("admin"))
+            else:
+                return redirect(url_for("home"))
         else:
             return render_template('login.html', message="Incorrect password")
     else:
@@ -104,31 +109,52 @@ def login():
 @app.route('/home')
 def home():
     if check_session():
-        return render_template('home.html')
+        if check_admin() == 0:
+            return render_template('home.html')
+        else:
+            return redirect(url_for("admin"))
     else:
         return redirect(url_for("login"))
 
 @app.route('/entry')
 def entry():
     if check_session():
-        return render_template('entry.html')
+        if check_admin() == 0:
+            return render_template('entry.html')
+        else:
+            return redirect(url_for("admin"))
     else:
         return redirect(url_for("login"))
 
 @app.route('/pathist')
 def pathist():
     if check_session():
-        return render_template('pathist.html')
+        if check_admin() == 0:
+            return render_template('pathist.html')
+        else:
+            return redirect(url_for("admin"))
     else:
         return redirect(url_for("login"))
 
 @app.route('/admin')
 def admin():
-    return render_template('admin.html')
+    if check_session():
+        if check_admin() == 1:
+            return render_template('admin.html')
+        else:
+            return redirect(url_for("home"))
+    else:
+        return redirect(url_for("login"))
 
 @app.route('/dochist')
 def dochist():
-    return render_template('dochist.html')
+    if check_session():
+        if check_admin() == 1:
+            return render_template('dochist.html')
+        else:
+            return redirect(url_for("home"))
+    else:
+        return redirect(url_for("login"))
 
 @app.route('/logout')
 def logout():
@@ -140,6 +166,12 @@ def check_session():
         return True
     else:
         False
+
+def check_admin():
+    if session["admin"] == 1:
+        return True
+    else:
+        return False
 
 if __name__ == "__main__":
     app.run(debug=True)
