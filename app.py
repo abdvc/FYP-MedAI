@@ -18,8 +18,8 @@ def get_features(model_id):
     """
     query = 'select name,type,feat_order from features where model_id = ?'
     cur = conn.execute(query,(model_id,))
-
-    return cur.fetchall()
+    result = cur.fetchall()
+    return result
 
 app.jinja_env.globals.update(get_features=get_features)
 
@@ -43,9 +43,7 @@ def add_features(model_id,features, feature_types, feat_order=None):
 
 #TODO: validation
 def add_model(model, model_name, desc, features=None,feature_types=None, feat_order=None, preprocess=None):
-    with open(model, 'rb') as f:
-        clf = pickle.load(f)
-    loaded_model = pickle.dumps(clf)
+    loaded_model = pickle.dumps(model)
     model_query = 'insert into models (name,description,model) values (?,?,?)'
     conn.execute(model_query,[model_name,desc,loaded_model])
     conn.commit()
@@ -65,11 +63,20 @@ def add_model(model, model_name, desc, features=None,feature_types=None, feat_or
     return model_id
 
 #TODO: finish method
-def convert_input():
+def convert_input(request):
     """
     convert input given through form into a model readable form. can be done through calling preprocess after converting to something like a dataframe
     additional arguements for further customization?
     """
+    feature_names = [str(k).split('-')[0] for k in request.keys()]
+    feature_order = [int(str(k).split('-')[1]) for k in request.keys()]
+    feature_values = [request[str(feature_names[i])+'-'+str(feature_order[i])] for i in range(len(feature_names))]
+    print(feature_names)
+    print(feature_order)
+    print(feature_values)
+    print('------------------------------------------------------------------------------------------------------')
+    print(request)
+
     return None
 
 # finish
@@ -78,6 +85,9 @@ def prediction():
     give input to model for prediction
 
     """
+    
+
+
     return None
     
 def explain():
@@ -119,8 +129,12 @@ def home():
     else:
         return redirect(url_for("login"))
 
-@app.route('/entry')
+@app.route('/entry',methods=['POST','GET'])
 def entry():
+    if request.method == "POST":
+        req = request.form
+        convert_input(req)
+
     if check_session():
         if check_admin() == 0:
             return render_template('entry.html')
