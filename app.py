@@ -41,10 +41,11 @@ def add_features(model_id,features, feature_types, feat_order=None):
 
 #TODO: validation
 def add_model(model, model_name, desc, features=None,feature_types=None, feat_order=None, preprocess=None):
-    
-    
+    with open(model, 'rb') as f:
+        clf = pickle.load(f)
+    loaded_model = pickle.dumps(clf)
     model_query = 'insert into models (name,description,model) values (?,?,?)'
-    conn.execute(model_query,[model_name,desc,model])
+    conn.execute(model_query,[model_name,desc,loaded_model])
     conn.commit()
 
     get_id_query = 'select MAX(id) from models'
