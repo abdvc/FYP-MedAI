@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, session
+from flask import Flask, render_template, url_for, request, redirect, session, jsonify
 import sqlite3
 
 app = Flask(__name__)
@@ -170,6 +170,10 @@ def logout():
     session.pop("name", None)
     session.pop("admin", None)
     return redirect(url_for("login"))
+
+@app.route('/entry/_get_data/', methods=['POST'])
+def _get_data():
+    return jsonify({'data': render_template('response.html')})
 
 #method to check if session is valid
 def check_session():
