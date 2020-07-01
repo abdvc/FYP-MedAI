@@ -21,8 +21,6 @@ def get_features(model_id):
 
     return cur.fetchall()
 
-app.jinja_env.globals.update(get_features=get_features)
-
 def add_features(model_id,features, feature_types, feat_order=None):
 
     feature_query = 'insert into features (name, type, model_id, feat_order) values (?,?,?,?)'
@@ -87,6 +85,7 @@ def explain():
     """
     return None
 
+#login page
 @app.route('/', methods=['POST','GET'])
 def login():
     if request.method == 'POST':
@@ -109,6 +108,7 @@ def login():
             return redirect(url_for("home"))
         return render_template('login.html', message="  ")
 
+#route to doctor home page
 @app.route('/home')
 def home():
     if check_session():
@@ -119,6 +119,7 @@ def home():
     else:
         return redirect(url_for("login"))
 
+#route to data entry page
 @app.route('/entry')
 def entry():
     if check_session():
@@ -129,6 +130,7 @@ def entry():
     else:
         return redirect(url_for("login"))
 
+#route to patient history
 @app.route('/pathist')
 def pathist():
     if check_session():
@@ -139,6 +141,7 @@ def pathist():
     else:
         return redirect(url_for("login"))
 
+#route to admin home page
 @app.route('/admin')
 def admin():
     if check_session():
@@ -149,6 +152,7 @@ def admin():
     else:
         return redirect(url_for("login"))
 
+#route to doctor history page
 @app.route('/dochist')
 def dochist():
     if check_session():
@@ -159,22 +163,30 @@ def dochist():
     else:
         return redirect(url_for("login"))
 
+#login function
 @app.route('/logout')
 def logout():
     session.pop("email", None)
+    session.pop("name", None)
+    session.pop("admin", None)
     return redirect(url_for("login"))
 
+#method to check if session is valid
 def check_session():
     if "email" in session:
         return True
     else:
         False
 
+#Method to check if the user is an admin or doctor
 def check_admin():
     if session["admin"] == 1:
         return True
     else:
         return False
+
+app.jinja_env.globals.update(get_features=get_features)
+app.jinja_env.globals.update(model_list=model_list)
 
 if __name__ == "__main__":
     app.run(debug=True)
