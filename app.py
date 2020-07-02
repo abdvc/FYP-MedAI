@@ -129,12 +129,8 @@ def home():
     else:
         return redirect(url_for("login"))
 
-<<<<<<< HEAD
-@app.route('/entry',methods=['POST','GET'])
-=======
 #route to data entry page
-@app.route('/entry')
->>>>>>> 3c5dd04a7a95c5dbc5c6171e395221baa4d2ab4a
+@app.route('/entry',methods=['POST','GET'])
 def entry():
     if request.method == "POST":
         req = request.form
@@ -158,6 +154,11 @@ def pathist():
             return redirect(url_for("admin"))
     else:
         return redirect(url_for("login"))
+
+#route to diagnosis
+@app.route('/diagnosis', methods=['POST'])
+def diagnosis():
+    return "Diagnosis results"
 
 #route to admin home page
 @app.route('/admin')
@@ -189,10 +190,6 @@ def logout():
     session.pop("admin", None)
     return redirect(url_for("login"))
 
-@app.route('/entry/_get_data/', methods=['POST'])
-def _get_data():
-    return jsonify({'data': render_template('response.html')})
-
 #method to check if session is valid
 def check_session():
     if "email" in session:
@@ -206,6 +203,12 @@ def check_admin():
         return True
     else:
         return False
+
+@app.route('/entry/_get_data/', methods=['POST'])
+def _get_data():
+    button_id = request.form["data"]
+    app.logger.info(button_id)
+    return jsonify({'data': render_template('response.html', button_id=button_id)})
 
 app.jinja_env.globals.update(get_features=get_features)
 app.jinja_env.globals.update(model_list=model_list)
