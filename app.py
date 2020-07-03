@@ -20,6 +20,11 @@ def fetch_all_patients():
     cur = conn.execute('SELECT * from Patients')
     return cur.fetchall()
 
+def insert_into_users(name,email,password, admin):
+    cur = conn.execute("INSERT INTO Users (name, email, password, admin) VALUES (?,?,?,?)", (name,email,password, admin))
+    conn.commit()
+    print("Row inserted: ", cur.lastrowid)
+
 def get_features(model_id):
     """
     can we get an alternate type for easier to understand input?
@@ -203,7 +208,7 @@ def diagnosis():
 def admin():
     if request.method == "POST":
         if request.form.get('btn-user') == "submitted":
-            print(request.form.to_dict())
+            insert_into_users(request.form['name-user'], request.form['email-user'], request.form['pass-user'], request.form['check-admin'])
         elif request.form.get('btn-model') == "submitted":
             print(request.form.to_dict())
 
