@@ -5,9 +5,9 @@
         <div class="col-sm-10"><input 
             {% if row[1] == "int64" %}type="number" placeholder="Enter Number"
             {% elif row[1] == "float64" %}type="number" placeholder="Enter Number" step="0.01"
-            {% else %}type="text" placeholder="Enter text"
+            {% else %}type="text" placeholder="Enter Text"
             {% endif %}
             class="form-control"
         ></div>
 {% endfor %}
-<input type="submit" value="Submit" class="btn btn-primary">
+<input id={{button_id}} type="submit" value="Submit" class="btn btn-primary">
