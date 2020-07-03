@@ -100,7 +100,7 @@ def convert_input(request):
     # preprocess = importlib.import_module('preprocess/' + file_name[0] + ".py")
     df = preprocess.preprocess(df)
     print(df)
-    return None
+    return prediction(str(keys[0]).split('-')[2],df)
 
 # finish
 def prediction(model_id, df):
@@ -108,20 +108,16 @@ def prediction(model_id, df):
     give input to model for prediction
 
     """
-    query = "select model from models where model_id = ?"
+    query = "select model from models where id = ?"
     cur = conn.execute(query,(model_id,))
 
     model = cur.fetchone()[0]
 
-    pickle.loads(model)
+    model = pickle.loads(model)
+    results = model.predict(df)
+    return results
 
-    model.predict(df.loc[0])
-
-    
-
-
-    return None
-    
+        
 def explain():
     """
     explain the results of the model prediction in this method
