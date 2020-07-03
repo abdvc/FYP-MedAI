@@ -199,8 +199,14 @@ def diagnosis():
     return render_template('diagnosis.html')
 
 #route to admin home page
-@app.route('/admin')
+@app.route('/admin', methods=['GET','POST'])
 def admin():
+    if request.method == "POST":
+        if request.form.get('btn-user') == "submitted":
+            print(request.form.to_dict())
+        elif request.form.get('btn-model') == "submitted":
+            print(request.form.to_dict())
+
     if check_session():
         if check_admin() == 1:
             return render_template('admin.html')
