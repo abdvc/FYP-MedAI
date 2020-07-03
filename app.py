@@ -16,6 +16,10 @@ def model_list():
 
     return cur.fetchall()
 
+def fetch_all_patients():
+    cur = conn.execute('SELECT * from Patients')
+    return cur.fetchall()
+
 def get_features(model_id):
     """
     can we get an alternate type for easier to understand input?
@@ -192,7 +196,7 @@ def pathist():
 #route to diagnosis
 @app.route('/diagnosis', methods=['POST'])
 def diagnosis():
-    return "Diagnosis results"
+    return render_template('diagnosis.html')
 
 #route to admin home page
 @app.route('/admin')
@@ -246,6 +250,7 @@ def _get_data():
 
 app.jinja_env.globals.update(get_features=get_features)
 app.jinja_env.globals.update(model_list=model_list)
+app.jinja_env.globals.update(fetch_all_patients=fetch_all_patients)
 
 if __name__ == "__main__":
     app.run(debug=True)
