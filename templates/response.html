@@ -1,13 +1,7 @@
-{% set feat = get_features(model_id=button_id) %}
-{% for row in feat %}
-    <div class="col-sm-2 col-form-label">
-        <label>{{row[0]}}</label></div>
-        <div class="col-sm-10"><input 
-            {% if row[1] == "int64" %}type="number" placeholder="Enter Number"
-            {% elif row[1] == "float64" %}type="number" placeholder="Enter Number" step="0.01"
-            {% else %}type="text" placeholder="Enter text"
-            {% endif %}
-            class="form-control"
-        ></div>
+{% set feat = get_features(model_id=button_id) %} {% for row in feat %}
+<div class="col-sm-2 col-form-label">
+    <label>{{row[0]}}</label></div>
+<div class="col-sm-10"><input name="{{ (row[0]|string + '-' + row[2]|string + '-' + row[3]|string) }}" {% if row[1]=="int64" %}type="number" placeholder="Enter Number" {% elif row[1]=="float64" %}type="number" placeholder="Enter Number" step="0.01" {% else %}type="text" placeholder="Enter text"
+        {% endif %} class="form-control"></div>
 {% endfor %}
 <input type="submit" value="Submit" class="btn btn-primary">

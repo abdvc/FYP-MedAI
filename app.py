@@ -1,5 +1,9 @@
 from flask import Flask, render_template, url_for, request, redirect, session, jsonify
 import sqlite3
+import pandas as pd
+import importlib.util
+import sklearn
+import pickle
 
 app = Flask(__name__)
 app.secret_key = "lightupskecher"
@@ -16,7 +20,7 @@ def get_features(model_id):
     """
     can we get an alternate type for easier to understand input?
     """
-    query = 'select name,type,feat_order from features where model_id = ?'
+    query = 'select name,type,feat_order,model_id from features where model_id = ?'
     cur = conn.execute(query,(model_id,))
     result = cur.fetchall()
     return result
@@ -66,23 +70,53 @@ def convert_input(request):
     convert input given through form into a model readable form. can be done through calling preprocess after converting to something like a dataframe
     additional arguements for further customization?
     """
-    feature_names = [str(k).split('-')[0] for k in request.keys()]
-    feature_order = [int(str(k).split('-')[1]) for k in request.keys()]
-    feature_values = [request[str(feature_names[i])+'-'+str(feature_order[i])] for i in range(len(feature_names))]
+    keys = [str(k) for k in request.keys()]
+    print(request)
+    feature_names = [k.split('-')[0] for k in keys]
     print(feature_names)
+    feature_order = [int(k.split('-')[1]) for k in keys]
+    feature_values = [request[keys[i]] for i in range(len(feature_names))]
+    
     print(feature_order)
     print(feature_values)
     print('------------------------------------------------------------------------------------------------------')
     print(request)
 
+    
+
+    df = pd.DataFrame(columns=feature_names)
+    df.loc[0] = feature_values
+    print(df.head())
+
+    query = 'select file_name from preprocess where model_id = ?'
+    cur = conn.execute(query,(str(keys[0]).split('-')[2],))
+    file_name = cur.fetchone()
+
+    
+    spec = importlib.util.spec_from_file_location("module.name", 'preprocess/' + file_name[0])
+    preprocess = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(preprocess)
+
+    # preprocess = importlib.import_module('preprocess/' + file_name[0] + ".py")
+    df = preprocess.preprocess(df)
+    print(df)
     return None
 
 # finish
-def prediction():
+def prediction(model_id, df):
     """
     give input to model for prediction
 
     """
+    query = "select model from models where model_id = ?"
+    cur = conn.execute(query,(model_id,))
+
+    model = cur.fetchone()[0]
+
+    pickle.loads(model)
+
+    model.predict(df.loc[0])
+
     
 
 
