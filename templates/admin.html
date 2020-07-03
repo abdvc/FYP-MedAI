@@ -11,41 +11,41 @@
     <div class="container">
     <div class="row">
     <div class="col-6"><h1>Create User</h1>
-        <form>
+        <form method="POST" name='form-user'>
             <label>Name</label>
-            <input type="text" class="form-control col-7">
+            <input type="text" class="form-control col-7" name="name-user">
             <label>Email</label>
-            <input type="email" class="form-control col-7">
+            <input type="email" class="form-control col-7" name="email-user">
             <label>Password</label>
-            <input type="text"  class="form-control col-7">
+            <input type="text" class="form-control col-7" name="pass-user">
             <br>
             <div class="form-check form-check-inline">
-                <input type="radio" class="form-check-input" id="doctor" value="doctor" name="check-admin">
+                <input type="radio" class="form-check-input" id="doctor" value="0" name="check-admin">
                 <label class="form-check-label" for="doctor">Doctor</label>
             </div>
             <div class="form-check form-check-inline">
-                <input type="radio" class="form-check-input" id="admin" value="admin" name="check-admin">
+                <input type="radio" class="form-check-input" id="admin" value="1" name="check-admin">
                 <label class="form-check-label" for="admin">Admin</label>
             </div>
             <br><br>
-            <button type="submit" class="btn btn-primary mb-2">Add User</button>
+            <button type="submit" class="btn btn-primary mb-2" name="btn-user" value="submitted">Add User</button>
         </form>
     </div>
     <div class="col-6"><h1>Upload Model</h1>
-        <form>
+        <form method="POST" name='form-model'>
             <label>Name</label>
-            <input type="text" class="form-control col-7">
+            <input type="text" class="form-control col-7" name="name-model">
             <label>Description</label>
-            <input type="text" class="form-control col">
+            <input type="text" class="form-control col" name="desc-model">
             <br>
             <label>Upload Model File</label>
-            <input type="file" class="form-control-file" id="model-upload">
+            <input type="file" class="form-control-file" id="model-upload" name="upload-model">
             <label>Upload Preprocess File</label>
-            <input type="file" class="form-control-file" id="preprocess-upload">
+            <input type="file" class="form-control-file" id="preprocess-upload" name="upload-file">
             <label>Upload Features File</label>
-            <input type="file" class="form-control-file" id="features-upload">
+            <input type="file" class="form-control-file" id="features-upload" name="upload-feat">
             <br>
-            <button type="submit" class="btn btn-primary mb-2">Add Model</button>
+            <button type="submit" class="btn btn-primary mb-2" name="btn-model" value="submitted">Add Model</button>
         </form>
     </div>
 </div>
