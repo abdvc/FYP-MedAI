@@ -293,5 +293,5 @@ app.jinja_env.globals.update(fetch_all_patients=fetch_all_patients)
 app.jinja_env.globals.update(fetch_all_doctors=fetch_all_doctors)
 
 if __name__ == "__main__":
-    print("\nMedAI Assistant\nCopyright (C) 2020  Abdullah Humayun, Abdul Razaque Soomro, Danysh Soomros\n")
+    print("\nMedAI Assistant\nCopyright (C) 2020  Abdullah Humayun, Abdul Razaque Soomro, Danysh Soomro\n")
     app.run(debug=True)
