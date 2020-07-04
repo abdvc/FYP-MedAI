@@ -25,6 +25,7 @@ import pickle
 import shap
 import matplotlib.pyplot as plt
 from io import BytesIO
+import base64
 
 app = Flask(__name__)
 app.secret_key = "lightupskecher"
@@ -149,8 +150,8 @@ def prediction(model_id, df):
 
     model = pickle.loads(model)
     results = model.predict(df)
-    return Response((explain(model,df)).getvalue(), mimetype='image/png')
-
+    # return Response((explain(model,df)).getvalue(), mimetype='image/png')
+    return explain(model,df)
         
 def explain(model, df):
     """
@@ -160,9 +161,11 @@ def explain(model, df):
     shap.initjs()
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(df)
-    shap.force_plot(explainer.expected_value[0], shap_values[0], df.loc[0])
+    fig = shap.force_plot(explainer.expected_value[0], shap_values[0], df.loc[0],matplotlib=True,show=False)
+    fig = plt.gcf()
     output = BytesIO()
-    plt.savefig(output)
+    plt.savefig(output,format='png',dpi=250, bbox_inches='tight')
+    output.seek(0)
     return output
 
 #login page
@@ -229,7 +232,10 @@ def diagnosis():
     if request.method == "POST":
         req = request.form
         img = convert_input(req)
-    return render_template('diagnosis.html', image=img)
+        buffer = b''.join(img)
+        b2 = base64.b64encode(buffer)
+        sunalt2=b2.decode('utf-8')
+    return render_template('diagnosis.html', image=sunalt2)
 
 #route to admin home page
 @app.route('/admin', methods=['GET','POST'])
