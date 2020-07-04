@@ -1,3 +1,21 @@
+"""
+MedAI Assistant
+Copyright (C) 2020  Abdullah Humayun, Abdul Razaque Soomro, Danysh Soomro
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
 from flask import Flask, render_template, url_for, request, redirect, session, jsonify
 import sqlite3
 import pandas as pd
@@ -210,7 +228,7 @@ def admin():
         if request.form.get('btn-user') == "submitted":
             insert_into_users(request.form['name-user'], request.form['email-user'], request.form['pass-user'], request.form['check-admin'])
         elif request.form.get('btn-model') == "submitted":
-            print(request.form.to_dict())
+            add_model(request.form['upload-model'], request.form['name-model'], request.form['desc-model'])
 
     if check_session():
         if check_admin() == 1:
@@ -264,4 +282,5 @@ app.jinja_env.globals.update(model_list=model_list)
 app.jinja_env.globals.update(fetch_all_patients=fetch_all_patients)
 
 if __name__ == "__main__":
+    print("\nMedAI Assistant\nCopyright (C) 2020  Abdullah Humayun, Abdul Razaque Soomro, Danysh Soomros\n")
     app.run(debug=True)
