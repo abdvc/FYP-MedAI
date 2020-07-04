@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from flask import Flask, render_template, url_for, request, redirect, session, jsonify
+from flask import Flask, render_template, url_for, request, redirect, session, jsonify,Response
 import sqlite3
 import pandas as pd
 import importlib.util
@@ -24,6 +24,7 @@ import sklearn
 import pickle
 import shap
 import matplotlib.pyplot as plt
+from io import BytesIO
 
 app = Flask(__name__)
 app.secret_key = "lightupskecher"
