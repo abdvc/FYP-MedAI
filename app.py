@@ -228,7 +228,7 @@ def diagnosis():
     if request.method == "POST":
         req = request.form
         img = convert_input(req)
-    return render_template('diagnosis.html', image=img)
+    return render_template('diagnosis.html')
 
 #route to admin home page
 @app.route('/admin', methods=['GET','POST'])

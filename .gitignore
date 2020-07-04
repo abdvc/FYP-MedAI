@@ -1,5 +1,6 @@
 .vscode/settings.json
 env
+venv
 __pycache__
 user_db.py
 patient_db.py
