@@ -15,5 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
-{% extends "base.html" %} {% set active_page = "entry" %} {% block head %} {% endblock %} {% block title %}Med AI | Diagnosis Results{% endblock %} {% block content %}
-<img src="data:image/png;base64,{{ image }}"> {% endblock %}
+{% extends "base.html" %} {% set active_page = "entry" %} 
+{% block head %} {% endblock %} 
+{% block title %}Med AI | Diagnosis Results{% endblock %} 
+{% block content %}
+<br><br><br>
+<div>
+    <img src="data:image/png;base64,{{ image }}" style="max-width:100%;max-height:70%;">
+</div> 
+{% endblock %}
