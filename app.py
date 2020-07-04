@@ -40,6 +40,10 @@ def fetch_all_patients():
     cur = conn.execute('SELECT * from Patients')
     return cur.fetchall()
 
+def fetch_all_doctors():
+    cur = conn.execute('SELECT * from Doctors')
+    return cur.fetchall()
+
 def insert_into_users(name,email,password, admin):
     cur = conn.execute("INSERT INTO Users (name, email, password, admin) VALUES (?,?,?,?)", (name,email,password, admin))
     conn.commit()
@@ -197,9 +201,6 @@ def home():
 #route to data entry page
 @app.route('/entry',methods=['POST','GET'])
 def entry():
-    if request.method == "POST":
-        req = request.form
-        convert_input(req)
 
     if check_session():
         if check_admin() == 0:
@@ -223,7 +224,11 @@ def pathist():
 #route to diagnosis
 @app.route('/diagnosis', methods=['POST'])
 def diagnosis():
-    return render_template('diagnosis.html')
+    img = None
+    if request.method == "POST":
+        req = request.form
+        img = convert_input(req)
+    return render_template('diagnosis.html', image=img)
 
 #route to admin home page
 @app.route('/admin', methods=['GET','POST'])
@@ -284,6 +289,7 @@ def _get_data():
 app.jinja_env.globals.update(get_features=get_features)
 app.jinja_env.globals.update(model_list=model_list)
 app.jinja_env.globals.update(fetch_all_patients=fetch_all_patients)
+app.jinja_env.globals.update(fetch_all_doctors=fetch_all_doctors)
 
 if __name__ == "__main__":
     print("\nMedAI Assistant\nCopyright (C) 2020  Abdullah Humayun, Abdul Razaque Soomro, Danysh Soomros\n")
