@@ -4,6 +4,8 @@ import pandas as pd
 import importlib.util
 import sklearn
 import pickle
+import shap
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 app.secret_key = "lightupskecher"
@@ -103,7 +105,7 @@ def convert_input(request):
 
     # preprocess = importlib.import_module('preprocess/' + file_name[0] + ".py")
     df = preprocess.preprocess(df)
-    print(df)
+    # df.to_csv("test.csv")
     return prediction(str(keys[0]).split('-')[2],df)
 
 # finish
@@ -119,15 +121,21 @@ def prediction(model_id, df):
 
     model = pickle.loads(model)
     results = model.predict(df)
-    return results
+    return Response((explain(model,df)).getvalue(), mimetype='image/png')
 
         
-def explain():
+def explain(model, df):
     """
     explain the results of the model prediction in this method
 
     """
-    return None
+    shap.initjs()
+    explainer = shap.TreeExplainer(model)
+    shap_values = explainer.shap_values(df)
+    shap.force_plot(explainer.expected_value[0], shap_values[0], df.loc[0])
+    output = BytesIO()
+    plt.savefig(output)
+    return output
 
 #login page
 @app.route('/', methods=['POST','GET'])
