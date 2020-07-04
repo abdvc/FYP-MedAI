@@ -2,5 +2,4 @@
 env
 __pycache__
 user_db.py
-doctor_db.py
 patient_db.py
