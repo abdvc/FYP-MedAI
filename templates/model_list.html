@@ -17,12 +17,16 @@
 -->
 {% extends "base.html" %}
 {% set active_page = "model_list" %}
-{% block title %}Med AI | Model List{% endblock %}
+{% block title %}Model List{% endblock %}
 {% block head %}
 <link href="../static/css/pathist.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
-<div class="container pathist-body">
+<div class="pathist-body">
+    <div>
+        <h1 class="display-4">Model List</h1>
+    </div>
+    <br/><hr><br/>
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
