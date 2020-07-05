@@ -27,7 +27,9 @@ Clone the repository using:
 
 ### Download materials
 Download and install Python from the [link](https://www.python.org/downloads/). Ensure that your Python download is the same as your machine (64-bit or 32-bit).
+
 Download and install Microsoft Visual C++ Build Tools from the [link](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
+
 Download and install pip from the [link](https://pip.pypa.io/en/stable/installing/).
 
 ### Install dependencies
@@ -51,10 +53,12 @@ You shall be redirected to the login page. You can login using either the admin 
 
 #### Admin
 Email: admin@admin.com
+
 Password: admin
 
 #### Doctor
 Email: test@test.com
+
 Password: test
 
 ## License
@@ -62,5 +66,7 @@ This application is licensed under GNU General Public License v3.0. The license 
 
 ## Developers
 Abdullah Humayun
+
 Abdul Razzaque Soomro
+
 Danysh Soomro
