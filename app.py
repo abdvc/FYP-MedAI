@@ -23,6 +23,8 @@ import importlib.util
 import sklearn
 import pickle
 import shap
+import os
+from werkzeug.utils import secure_filename
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
@@ -94,8 +96,10 @@ def add_model(model, model_name, desc, features=None,feature_types=None, feat_or
         add_features(model_id,features,feature_types, feat_order)
     
     if preprocess is not None:
+        filename = secure_filename(preprocess.filename)
+        file.save(os.path.join('preprocess', preprocess.filename))
         preprocess_query = 'insert into preprocess (file_name,model_id) values (?,?)'
-        conn.execute(preprocess_query,[preprocess, model_id])
+        conn.execute(preprocess_query,[preprocess.filename, model_id])
     
     return model_id
 
@@ -240,11 +244,19 @@ def diagnosis():
 #route to admin home page
 @app.route('/admin', methods=['GET','POST'])
 def admin():
+    if 'model-upload' in request.files:
+        model = request.files['model-upload']
+    if 'features-upload' in request.files:
+        features = request.files['features-upload']
+    if 'preprocess-upload' in request.files:
+        preprocess = request.files['preprocess-upload']
     if request.method == "POST":
         if request.form.get('btn-user') == "submitted":
             insert_into_users(request.form['name-user'], request.form['email-user'], request.form['pass-user'], request.form['check-admin'])
         elif request.form.get('btn-model') == "submitted":
-            add_model(request.form['upload-model'], request.form['name-model'], request.form['desc-model'])
+            df = pd.read_csv(features)
+
+            add_model(model, request.form['name-model'], request.form['desc-model'],list(features['name']),list(features['type']),list(features['feat_order']),preprocess)
 
     if check_session():
         if check_admin() == 1:
