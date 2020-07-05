@@ -15,16 +15,13 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
-{% extends "base.html" %} {% set active_page = "entry" %} {% block head %} {% endblock %} {% block title %}Med AI | Diagnosis Results{% endblock %} {% block content %}
-<br><br><br>
-<div>
+{% extends "base.html" %} {% set active_page = "entry" %} {% block head %}
+<link href="../static/css/diagnosis.css" rel="stylesheet"> {% endblock %} {% block title %}Diagnosis Results{% endblock %} {% block content %}
+
+<div class="diagnosis-body">
     <h1 class="display-4">Prediction</h1>
-    <>
-</div>
+    Model predicted the following value: {{prediction}}
 
-
-<br><br><br>
-<div>
     <h1 class="display-4">SHAP Plot</h1>
     <img src="data:image/png;base64,{{ image }}" style="max-width:100%;max-height:70%;">
 </div>
