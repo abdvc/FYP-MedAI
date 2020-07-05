@@ -33,7 +33,7 @@ app = Flask(__name__)
 app.secret_key = "lightupskecher"
 conn = sqlite3.connect("MedAi.db", check_same_thread=False)
 
-def model_list():
+def get_models():
     query = "select id, name, description from models"
 
     cur = conn.execute(query)
@@ -277,6 +277,20 @@ def dochist():
     else:
         return redirect(url_for("login"))
 
+#route to model list page
+@app.route('/model_list')
+def model_list():
+    if request.method == "POST":
+        print()
+
+    if check_session():
+        if check_admin() == 1:
+            return render_template('model_list.html')
+        else:
+            return redirect(url_for("home"))
+    else:
+        return redirect(url_for("login"))
+
 #login function
 @app.route('/logout')
 def logout():
@@ -306,11 +320,11 @@ def _get_data():
     return jsonify({'data': render_template('response.html', button_id=button_id)})
 
 app.jinja_env.globals.update(get_features=get_features)
-app.jinja_env.globals.update(model_list=model_list)
+app.jinja_env.globals.update(get_models=get_models)
 app.jinja_env.globals.update(fetch_all_patients=fetch_all_patients)
 app.jinja_env.globals.update(fetch_all_doctors=fetch_all_doctors)
 
 if __name__ == "__main__":
     print("\nMedAI Assistant\nCopyright (C) 2020  Abdullah Humayun, Abdul Razaque Soomro, Danysh Soomro\n")
-    #app.run(debug=True)
-    app.run()
+    app.run(debug=True)
+    #app.run()

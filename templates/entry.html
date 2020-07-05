@@ -19,7 +19,7 @@
 <link href="../static/css/entry.css" rel="stylesheet"> {% endblock %} {% block title %}Med AI | Data Entry{% endblock %} {% block content %}
 <!-- Side navigation -->
 <div class="sidenav container">
-    {% set model = model_list() %} {% for row in model %}
+    {% set model = get_models() %} {% for row in model %}
     <button id="{{row[0]}}" value={{row[0]}} class="m-1 btn btn-block btn-outline-info">{{ row[1] }}</button> {% endfor %}
 </div>
 

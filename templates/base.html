@@ -43,7 +43,8 @@
     {% else %}
       {% set navigation_bar = [
         ('/admin', 'admin', 'Admin'),
-        ('/dochist', 'dochist', 'Doctor History')
+        ('/dochist', 'dochist', 'Doctor History'),
+        ('/model_list', 'model_list', 'Model List')
       ] -%}
       {% set active_page = active_page|default('admin') -%}
     {% endif %}
