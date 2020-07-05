@@ -16,7 +16,7 @@ An open-source Medical Assistant using AI and AI explainability techniques.
 * Microsoft Visual C++ Build Tools
 
 ## Dependencies
-Dependencies are listed in [requirements.txt](https://github.com/abdvc/FYP-MedAI/blob/master/requirements.txt)
+Dependencies are listed in [requirements.txt](https://github.com/abdvc/FYP-MedAI/blob/master/requirements.txt). 
 
 ## Build instructions
 
@@ -32,10 +32,10 @@ After the application is running, go to the url displayed on the command prompt.
   ```
       http://127.0.0.1:5000/
   ```
-You shall be directed to the login page
+You shall be redirected to the login page.
 
 ## License
-This application is licensed under GNU General Public License v3.0. The license is available at [LICENSE.md](https://github.com/abdvc/FYP-MedAI/blob/master/LICENSE)
+This application is licensed under GNU General Public License v3.0. The license is available at [LICENSE.md](https://github.com/abdvc/FYP-MedAI/blob/master/LICENSE).
 
 ## Developers
 Abdullah Humayun
