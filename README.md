@@ -30,6 +30,7 @@ Download and install Python from the [link](https://www.python.org/downloads/). 
 
 Download and install Microsoft Visual C++ Build Tools from the [link](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
 
+##### In case pip is not already installed
 Download and install pip from the [link](https://pip.pypa.io/en/stable/installing/).
 
 ### Install dependencies
