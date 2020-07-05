@@ -165,12 +165,16 @@ def explain(model, df):
     shap.initjs()
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(df)
+    prediction = model.predict(df)
     fig = shap.force_plot(explainer.expected_value[0], shap_values[0], df.loc[0],matplotlib=True,show=False)
+    
     fig = plt.gcf()
     output = BytesIO()
     plt.savefig(output,format='png',dpi=250, bbox_inches='tight')
     output.seek(0)
-    return output
+    plt.close(fig)
+    # shap.summary_plot(shap_values[0], df.columns, plot_type="bar")
+    return [output,prediction]
 
 #login page
 @app.route('/', methods=['POST','GET'])
@@ -235,11 +239,14 @@ def diagnosis():
     img = None
     if request.method == "POST":
         req = request.form
-        img = convert_input(req)
+        results = convert_input(req)
+        img = results[0]
+        prediction = results[1]
+        print(prediction)
         buffer = b''.join(img)
         b2 = base64.b64encode(buffer)
         sunalt2=b2.decode('utf-8')
-    return render_template('diagnosis.html', image=sunalt2)
+    return render_template('diagnosis.html', image=sunalt2, prediction=prediction[0])
 
 #route to admin home page
 @app.route('/admin', methods=['GET','POST'])

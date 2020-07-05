@@ -39,5 +39,5 @@ This application is licensed under GNU General Public License v3.0. The license 
 
 ## Developers
 Abdullah Humayun
-Abdul Razzaque Soomro
+Abdul Razaque Soomro
 Danysh Soomro
