@@ -32,6 +32,8 @@ import base64
 app = Flask(__name__)
 app.secret_key = "lightupskecher"
 conn = sqlite3.connect("MedAi.db", check_same_thread=False)
+app.config['UPLOAD_FOLDER'] = '/preprocess' 
+
 
 def get_models():
     query = "select id, name, description from models"
@@ -82,6 +84,7 @@ def add_features(model_id,features, feature_types, feat_order=None):
 
 #TODO: validation
 def add_model(model, model_name, desc, features=None,feature_types=None, feat_order=None, preprocess=None):
+    print('reached')
     loaded_model = pickle.dumps(model)
     model_query = 'insert into models (name,description,model) values (?,?,?)'
     conn.execute(model_query,[model_name,desc,loaded_model])
@@ -97,7 +100,8 @@ def add_model(model, model_name, desc, features=None,feature_types=None, feat_or
     
     if preprocess is not None:
         filename = secure_filename(preprocess.filename)
-        file.save(os.path.join('preprocess', preprocess.filename))
+        # file.save(os.path.join('preprocess', preprocess.filename))
+        file.save(filename)
         preprocess_query = 'insert into preprocess (file_name,model_id) values (?,?)'
         conn.execute(preprocess_query,[preprocess.filename, model_id])
     
@@ -255,19 +259,20 @@ def diagnosis():
 #route to admin home page
 @app.route('/admin', methods=['GET','POST'])
 def admin():
-    if 'model-upload' in request.files:
-        model = request.files['model-upload']
-    if 'features-upload' in request.files:
-        features = request.files['features-upload']
-    if 'preprocess-upload' in request.files:
-        preprocess = request.files['preprocess-upload']
+    
     if request.method == "POST":
         if request.form.get('btn-user') == "submitted":
             insert_into_users(request.form['name-user'], request.form['email-user'], request.form['pass-user'], request.form['check-admin'])
         elif request.form.get('btn-model') == "submitted":
-            df = pd.read_csv(features)
-
-            add_model(model, request.form['name-model'], request.form['desc-model'],list(features['name']),list(features['type']),list(features['feat_order']),preprocess)
+            print(request.files)
+            if 'upload-model' in request.files and 'upload-file' in request.files and 'upload-feat' in request.files:
+                model = request.files['upload-model']
+                model = pickle.load(model)
+                features = request.files['upload-feat']
+                features = pd.read_csv(features)
+                preprocess = request.files['upload-file']
+                
+                add_model(model, request.form['name-model'], request.form['desc-model'],list(features['name']),list(features['type']),list(features['feat_order']),preprocess)
 
     if check_session():
         if check_admin() == 1:
@@ -296,11 +301,18 @@ def model_list():
         req = request.form
         model_id = req['model_id']
 
+        get_name = 'select file_name from preprocess where model_id = ?'
+        cur = conn.execute(get_name, (model_id,))
+        file_name = cur.fetchone()
+
         delete_queries = ['delete from preprocess where model_id = ?', 'delete from features where model_id = ?', 'delete from models where id = ?']
 
         for query in delete_queries:
             conn.execute(query,(model_id,))
+            conn.commit()
         conn.commit()
+        if os.path.exists('preprocess/' + str(file_name[0]) +'.csv'):
+            os.remove(str(file_name[0]) + ".csv")
 
     if check_session():
         if check_admin() == 1:
