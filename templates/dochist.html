@@ -41,8 +41,8 @@
               </tr>
             </thead>
             <tbody id="table-body">
-              {% set patients = fetch_all_doctors() %}
-              {% for row in patients %}
+              {% set doctor = fetch_all_doctors() %}
+              {% for row in doctor %}
               <tr>
                 <td class="doc-id">{{row[0]}}</td>
                 <td>{{row[1]}}</td>
