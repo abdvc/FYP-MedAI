@@ -246,7 +246,11 @@ def diagnosis():
         buffer = b''.join(img)
         b2 = base64.b64encode(buffer)
         sunalt2=b2.decode('utf-8')
-    return render_template('diagnosis.html', image=sunalt2, prediction=prediction[0])
+        if prediction[0] == 1:
+            prediction = 'positive'
+        else:
+            prediction = 'negative'
+    return render_template('diagnosis.html', image=sunalt2, prediction=prediction)
 
 #route to admin home page
 @app.route('/admin', methods=['GET','POST'])
@@ -285,10 +289,18 @@ def dochist():
         return redirect(url_for("login"))
 
 #route to model list page
-@app.route('/model_list')
+@app.route('/model_list', methods=['GET','POST'])
 def model_list():
     if request.method == "POST":
-        print()
+        print('hey')
+        req = request.form
+        model_id = req['model_id']
+
+        delete_queries = ['delete from preprocess where model_id = ?', 'delete from features where model_id = ?', 'delete from models where id = ?']
+
+        for query in delete_queries:
+            conn.execute(query,(model_id,))
+        conn.commit()
 
     if check_session():
         if check_admin() == 1:
