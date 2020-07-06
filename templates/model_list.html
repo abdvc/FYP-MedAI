@@ -15,18 +15,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
-{% extends "base.html" %}
-{% set active_page = "model_list" %}
-{% block title %}Model List{% endblock %}
-{% block head %}
-<link href="../static/css/pathist.css" rel="stylesheet">
-{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% set active_page = "model_list" %} {% block title %}Model List{% endblock %} {% block head %}
+<link href="../static/css/pathist.css" rel="stylesheet"> {% endblock %} {% block content %}
 <div class="pathist-body">
     <div>
         <h1 class="display-4">Model List</h1>
     </div>
-    <br/><hr><br/>
+    <br/>
+    <hr><br/>
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
@@ -42,8 +38,7 @@
             </tr>
         </thead>
         <tbody>
-            {% set model = get_models() %}
-            {% for row in model %}
+            {% set model = get_models() %} {% for row in model %}
             <tr>
                 <td>
                     {{row[0]}}
@@ -52,8 +47,8 @@
                     {{row[1]}}
                 </td>
                 <td>
-                    <form action="model_list" method="POST">
-                        <button type="submit" class="btn btn-danger" value={{row[0]}}>Delete</button>
+                    <form action="/model_list" method="POST">
+                        <button type="submit" class="btn btn-danger" name="model_id" value={{row[0]}}>Delete</button>
                     </form>
                 </td>
             </tr>
